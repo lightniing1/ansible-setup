@@ -1,0 +1,5 @@
+- name: Deploy Script-Based WoL Webhook Listener
+  hosts: swarm_managers
+  become: true
+  roles:
+    - scripted_wol_webhook

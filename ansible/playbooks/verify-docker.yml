@@ -1,0 +1,6 @@
+- name: Verify Docker Installation and Service Status
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - docker

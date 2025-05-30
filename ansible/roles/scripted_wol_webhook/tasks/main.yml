@@ -1,0 +1,40 @@
+- name: Install prerequisites for WoL script
+  ansible.builtin.apt:
+    name:
+      - wakeonlan
+      - python3-flask
+    state: present
+    update_cache: yes
+
+- name: Create directory for WoL webhook script
+  ansible.builtin.file:
+    path: /opt/wol_webhook
+    state: directory
+    mode: '0755'
+
+- name: Copy WoL webhook listener script
+  ansible.builtin.copy:
+    src: wol_webhook_listener.py
+    dest: /opt/wol_webhook/wol_webhook_listener.py
+    mode: '0755'
+
+- name: Template systemd service file for WoL webhook
+  ansible.builtin.template:
+    src: wol_webhook.service.j2
+    dest: /etc/systemd/system/wol_webhook.service
+    mode: '0644'
+  notify: Reload and restart WoL webhook service
+
+- name: Ensure WoL webhook service is enabled and started
+  community.general.systemd:
+    name: wol_webhook
+    enabled: yes
+    state: started
+    daemon_reload: yes
+
+handlers:
+  - name: Reload and restart WoL webhook service
+    community.general.systemd:
+      name: wol_webhook
+      state: restarted
+      daemon_reload: yes

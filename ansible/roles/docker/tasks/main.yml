@@ -1,0 +1,20 @@
+---
+- name: Check if Docker command is available
+  ansible.builtin.command: docker --version
+  register: docker_command_check
+  changed_when: false
+  failed_when: docker_command_check.rc != 0
+  tags: docker_verification
+
+- name: Display installed Docker version
+  ansible.builtin.debug:
+    msg: "Docker is installed. Version: {{ docker_command_check.stdout }}"
+  tags: docker_verification
+
+- name: Ensure Docker service is running and enabled (systemd)
+  ansible.builtin.systemd:
+    name: docker
+    state: started
+    enabled: yes
+  become: true
+  tags: docker_verification

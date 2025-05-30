@@ -1,0 +1,5 @@
+- name: Deploy Portainer
+  hosts: swarm_managers
+  become: true
+  roles:
+    - portainer

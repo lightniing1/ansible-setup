@@ -1,0 +1,5 @@
+- import_playbook: verify-docker.yml
+- import_playbook: setup-swarm.yml
+- import_playbook: label-nodes.yml
+- import_playbook: deploy-portainer.yml
+- import_playbook: deploy-scripted-wol.yml

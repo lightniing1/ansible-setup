@@ -1,0 +1,25 @@
+- name: Setup Docker Swarm Manager
+  hosts: swarm_managers
+  become: true
+  tasks:
+    - name: Initialize Swarm
+      community.docker.docker_swarm:
+        state: present
+        advertise_addr: "{{ ansible_host }}"
+      when: inventory_hostname == 'sbc'
+
+- name: Join workers to Swarm
+  hosts: swarm_workers
+  become: true
+  tasks:
+    - name: Get Swarm join token from manager (sbc)
+      ansible.builtin.command: docker swarm join-token -q worker
+      register: swarm_join_token
+      delegate_to: sbc
+      changed_when: false
+
+    - name: Join Swarm as a worker
+      community.docker.docker_swarm:
+        state: join
+        join_token: "{{ swarm_join_token.stdout }}"
+        remote_addrs: ["{{ hostvars['sbc']['ansible_host'] }}:2377"]

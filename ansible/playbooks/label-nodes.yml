@@ -1,0 +1,12 @@
+- name: Label Swarm Nodes
+  hosts: swarm_managers
+  become: true
+  gather_facts: false
+  tasks:
+    - name: "Apply label 'role={{ item.value.role }}' to node '{{ item.key }}'"
+      ansible.builtin.shell:
+        cmd: "docker node update --label-add role={{ item.value.role }} {{ item.key }}"
+      loop: "{{ query('dict', node_labels) }}"
+      register: label_result
+      changed_when: "'updated' in label_result.stdout or (label_result.rc == 0 and label_result.stdout_lines | length == 1 and label_result.stdout_lines[0] == item.key )"
+      failed_when: label_result.rc != 0 and "no such node" not in label_result.stderr
