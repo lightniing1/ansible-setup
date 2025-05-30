@@ -6,7 +6,7 @@ node_labels:
   x86: { role: heavy }
 
 # Variables for the scripted Wake-on-LAN webhook
-wol_script_target_mac: "AA:BB:CC:DD:EE:FF"  # <-- IMPORTANT: Replace with your x86 machine's MAC address
+wol_script_target_mac: "B8:AE:ED:85:41:49"  # <-- IMPORTANT: Replace with your x86 machine's MAC address
 wol_script_webhook_port: 9001
 # Optional: If you need to specify a broadcast address for wakeonlan
 # wol_script_broadcast_address: "192.168.1.255"

@@ -1,0 +1,26 @@
+[Unit]
+Description=Wake-on-LAN Webhook Listener
+After=network.target
+
+[Service]
+User=nobody
+Group=nogroup
+WorkingDirectory=/opt/wol_webhook
+
+# Environment variables for the Python script
+Environment="WOL_TARGET_MAC={{ wol_script_target_mac }}"
+Environment="PORT={{ wol_script_webhook_port }}"
+{% if wol_script_broadcast_address is defined and wol_script_broadcast_address %}
+Environment="WOL_BROADCAST_ADDRESS={{ wol_script_broadcast_address }}"
+{% endif %}
+
+ExecStart=/usr/bin/python3 /opt/wol_webhook/wol_webhook_listener.py
+Restart=always
+RestartSec=5
+
+# Standard output and error logging
+StandardOutput=append:/var/log/wol_webhook.log
+StandardError=append:/var/log/wol_webhook.error.log
+
+[Install]
+WantedBy=multi-user.target
