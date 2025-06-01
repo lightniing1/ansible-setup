@@ -3,8 +3,8 @@ all:
     swarm_managers:
       hosts:
         sbc:
-          ansible_host: 192.168.100.84
+          ansible_host: dietpi
     swarm_workers:
       hosts:
         x86:
-          ansible_host: 192.168.100.85
+          ansible_host: light-server
