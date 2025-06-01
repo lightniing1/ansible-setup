@@ -1,5 +1,5 @@
 - name: Reload and restart WoL webhook service
-  community.general.systemd:
+  ansible.builtin.systemd:
     name: wol_webhook
     state: restarted
     daemon_reload: yes
