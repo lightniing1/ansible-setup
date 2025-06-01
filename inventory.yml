@@ -8,3 +8,4 @@ all:
       hosts:
         x86:
           ansible_host: light-server.local
+          ansible_user: light
