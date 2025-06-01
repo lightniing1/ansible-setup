@@ -3,8 +3,8 @@ all:
     swarm_managers:
       hosts:
         sbc:
-          ansible_host: dietpi
+          ansible_host: dietpi.local
     swarm_workers:
       hosts:
         x86:
-          ansible_host: light-server
+          ansible_host: light-server.local
